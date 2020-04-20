@@ -17,25 +17,47 @@ class SignUp extends React.Component {
 	}
 
 	handleSubmit = async (event) => {
+		// don't do the normal thing (aka HTML form action)
 		event.preventDefault();
 
+		// get some variables from component state
 		const { displayName, email, password, confirmPassword } = this.state;
 
+		// do a basic sanity check => both password fields should be same
 		if (password !== confirmPassword) {
 			alert("passwords don't match");
 			return;
 		}
+		// signup logic
 		try {
+			/*
+				await => es6 (newer?) function that is synctatic sugar for Promises
+					=> or: lets you call an async function, as if it were synchronous
+				
+				old: 
+					Promise.resolve(auth.createUser(e,p) => {
+						handleResponse()
+					}).then((response) => {
+						useResponse(response);
+					})
+				
+				new:
+					const response = await auth.createUse(e,p)
+			*/
+			// create new firebase user
 			const { user } = await auth.createUserWithEmailAndPassword(email, password);
 
+			// create some other user profile
 			await createUserProfileDocument(user, { displayName });
+			// update component state *after* login
 			this.setState({
-				dispalyName: '',
+				displayName: '',
 				email: '',
 				password: '',
 				confirmPassword: ''
 			});
 		} catch (error) {
+			// handle error
 			console.error(error);
 		}
 	};
