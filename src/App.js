@@ -13,15 +13,6 @@ import { setCurrentUser } from './redux/user/user.actions';
 import { render } from '@testing-library/react';
 
 class App extends React.Component {
-	// WE do not need this because we added mapDispatchToProps line 69
-	// constructor() {
-	// 	super();
-
-	// 	this.state = {
-	// 		currentUser: null
-	// 	};
-	// }
-
 	unsubscribeFromAuth = null;
 
 	componentDidMount() {
